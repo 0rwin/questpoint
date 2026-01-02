@@ -1,0 +1,8 @@
+{
+  "name": "Questpoint Cafe",
+  "short_name": "Questpoint",
+  "description": "Your Quest Begins Here - A hybrid gaming cafe and loyalty app.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
