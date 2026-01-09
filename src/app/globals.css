@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --quest-purple: 74 20 140;
+    --quest-gold: 255 193 7;
+    --quest-dark: 26 26 26;
+    --quest-charcoal: 44 44 44;
+    --quest-cream: 245 245 220;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-quest-dark text-quest-cream antialiased;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-quest-dark;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-quest-gold/40 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-quest-gold/60;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-quest-gold/30 text-quest-cream;
+  }
+}
+
+@layer components {
+  /* Glass morphism effect */
+  .glass {
+    @apply bg-quest-charcoal/70 backdrop-blur-xl border border-quest-gold/10;
+  }
+
+  .glass-hover {
+    @apply glass transition-all duration-300;
+  }
+
+  .glass-hover:hover {
+    @apply border-quest-gold/30 shadow-gold-glow;
+  }
+
+  /* Gold button */
+  .btn-gold {
+    @apply bg-quest-gold text-quest-dark font-semibold px-6 py-3 rounded-full;
+    @apply transition-all duration-300;
+    @apply hover:bg-quest-gold-300 hover:shadow-gold-glow;
+    @apply active:scale-95;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none;
+  }
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply bg-transparent text-quest-cream border border-quest-cream/20 px-6 py-3 rounded-full;
+    @apply transition-all duration-300;
+    @apply hover:border-quest-gold hover:text-quest-gold;
+    @apply active:scale-95;
+  }
+
+  /* Purple button */
+  .btn-purple {
+    @apply bg-quest-purple text-quest-cream font-semibold px-6 py-3 rounded-full;
+    @apply transition-all duration-300;
+    @apply hover:bg-quest-purple-400 hover:shadow-purple-glow;
+    @apply active:scale-95;
+  }
+
+  /* Card styles */
+  .card {
+    @apply glass rounded-2xl p-6 transition-all duration-300;
+  }
+
+  .card-interactive {
+    @apply card cursor-pointer;
+    @apply hover:border-quest-gold/30 hover:shadow-gold-glow hover:-translate-y-1;
+  }
+
+  /* Input styles */
+  .input {
+    @apply w-full bg-quest-dark/50 border border-quest-cream/10 rounded-xl px-4 py-3;
+    @apply text-quest-cream placeholder:text-quest-cream/40;
+    @apply transition-all duration-300;
+    @apply focus:outline-none focus:border-quest-gold/50 focus:ring-2 focus:ring-quest-gold/20;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider;
+  }
+
+  .badge-gold {
+    @apply badge bg-quest-gold text-quest-dark;
+  }
+
+  .badge-purple {
+    @apply badge bg-quest-purple text-quest-cream;
+  }
+
+  .badge-ghost {
+    @apply badge bg-quest-cream/10 text-quest-cream/80;
+  }
+
+  /* Section title */
+  .section-title {
+    @apply font-fantasy text-3xl md:text-4xl text-quest-gold;
+  }
+
+  .section-subtitle {
+    @apply text-quest-cream/60 text-sm md:text-base italic;
+  }
+
+  /* Fantasy heading */
+  .heading-fantasy {
+    @apply font-fantasy tracking-tight;
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-quest-gold to-quest-gold-300;
+  }
+
+  /* Quest gradient background */
+  .bg-quest {
+    @apply bg-gradient-to-br from-quest-purple via-quest-dark to-quest-dark;
+  }
+
+  /* Animated border */
+  .border-animated {
+    @apply relative;
+  }
+
+  .border-animated::before {
+    content: '';
+    @apply absolute inset-0 rounded-2xl;
+    background: linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.3), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    padding: 1px;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar but keep functionality */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Text balance for better typography */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Safe area padding for mobile */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 1rem);
+  }
+
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 1rem);
+  }
+}
+
+/* Page transition animations */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter {
+  animation: pageEnter 0.5s ease-out forwards;
+}
+
+/* Staggered children animation */
+.stagger-children > * {
+  opacity: 0;
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.7s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.8s; }
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
