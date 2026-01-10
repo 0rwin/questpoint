@@ -134,7 +134,7 @@ export default function HomePage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1600&auto=format&fit=crop"
+            src="/questpoint-background-banner.jpg"
             alt="Questpoint Cafe gaming lounge"
             fill
             className="object-cover"

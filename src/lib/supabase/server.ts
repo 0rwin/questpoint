@@ -1,70 +1,36 @@
-// Supabase server client
-// TODO: Implement actual Supabase integration when franchise is activated
-
-export interface AuthError {
-  message: string;
-  status?: number;
-}
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
 /**
- * Creates a Supabase server client
- * @returns Stub Supabase client for now
+ * Creates a Supabase server client with cookie handling
+ * For use in Server Components, Server Actions, and Route Handlers
  */
 export async function createClient() {
-  // TODO: Replace with actual Supabase client creation
-  console.log('[STUB] Creating Supabase server client');
+  const cookieStore = await cookies();
 
-  return {
-    auth: {
-      exchangeCodeForSession: async (code: string) => {
-        console.log('[STUB] Exchanging code for session:', code);
-        return { error: null as AuthError | null };
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('[Supabase] Missing environment variables');
+    throw new Error('Missing Supabase environment variables');
+  }
+
+  return createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
       },
-      getSession: async () => {
-        console.log('[STUB] Getting session');
-
-        // In development, return a mock session to test admin panel
-        if (process.env.NODE_ENV === 'development') {
-          const mockSession = {
-            user: {
-              id: 'mock-user-id',
-              email: 'admin@questpointcafe.com',
-              created_at: new Date().toISOString(),
-            },
-            access_token: 'mock-access-token',
-            expires_at: Date.now() + 3600000,
-          };
-          return { data: { session: mockSession as any }, error: null as AuthError | null };
+      setAll(cookiesToSet) {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options);
+          });
+        } catch (error) {
+          // Cookie setting can fail in Server Components
+          // This is expected and can be ignored
         }
-
-        return { data: { session: null }, error: null as AuthError | null };
-      },
-      getUser: async () => {
-        console.log('[STUB] Getting user');
-        return { data: { user: null }, error: null as AuthError | null };
-      },
-      signOut: async () => {
-        console.log('[STUB] Signing out');
-        return { error: null as AuthError | null };
       },
     },
-    from: (table: string) => ({
-      select: () => ({
-        data: [],
-        error: null as AuthError | null,
-      }),
-      insert: (data: any) => ({
-        data: null,
-        error: null as AuthError | null,
-      }),
-      update: (data: any) => ({
-        data: null,
-        error: null as AuthError | null,
-      }),
-      delete: () => ({
-        data: null,
-        error: null as AuthError | null,
-      }),
-    }),
-  };
+  });
 }
