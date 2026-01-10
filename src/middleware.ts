@@ -62,7 +62,11 @@ export async function middleware(request: NextRequest) {
 
   // Check if user is admin
   const adminEmails = process.env.ADMIN_EMAILS?.split(',').map(e => e.trim()) || [];
-  const isAdmin = user && adminEmails.includes(user.email || '');
+  const userEmail = user?.email || '';
+  const isAdmin = user && (
+    adminEmails.includes(userEmail) || // Specific admin emails
+    userEmail.endsWith('@questpointcafe.com') // Any @questpointcafe.com email
+  );
 
   // COMING SOON MODE: Redirect non-admins to /coming-soon
   if (!isAdmin) {
