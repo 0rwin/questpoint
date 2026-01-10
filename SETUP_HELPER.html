@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questpoint Cafe - Supabase Setup Helper</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #4A148C 0%, #1A1A1A 100%);
+            color: #F5F5DC;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            background: linear-gradient(45deg, #FFC107, #FF9800);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .step {
+            background: rgba(42, 42, 42, 0.8);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid #FFC107;
+        }
+
+        .step-header {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #FFC107;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-number {
+            background: #FFC107;
+            color: #1A1A1A;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .step-desc {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
+            color: #1A1A1A;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.5);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .secondary-btn {
+            background: linear-gradient(135deg, #4A148C 0%, #7B1FA2 100%);
+            color: #F5F5DC;
+        }
+
+        .code-block {
+            background: #1A1A1A;
+            border: 1px solid #FFC107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .success-check {
+            color: #4CAF50;
+            font-size: 1.2rem;
+            margin-left: 10px;
+        }
+
+        .warning {
+            background: rgba(255, 152, 0, 0.1);
+            border-left: 4px solid #FF9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .completed {
+            opacity: 0.6;
+        }
+
+        .completed .step-header::after {
+            content: "✓ Completed";
+            margin-left: auto;
+            color: #4CAF50;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚔️ Questpoint Cafe</h1>
+        <p class="subtitle">Supabase Setup Assistant - Complete in 20 Minutes</p>
+
+        <!-- Step 1: Database Migration -->
+        <div class="step" id="step1">
+            <div class="step-header">
+                <span class="step-number">1</span>
+                <span>Run Database Migration</span>
+            </div>
+            <div class="step-desc">
+                Creates all 12 database tables (profiles, menu_items, events, orders, etc.)
+                <br><strong>Time: 3 minutes</strong>
+            </div>
+            <div class="button-group">
+                <button onclick="openSqlEditor()">📝 Open SQL Editor</button>
+                <button class="secondary-btn" onclick="copySqlFile()">📋 Copy Migration SQL</button>
+                <button class="secondary-btn" onclick="markComplete('step1')">✓ Mark Complete</button>
+            </div>
+            <div class="warning">
+                <strong>Instructions:</strong><br>
+                1. Click "Open SQL Editor" button above<br>
+                2. Click "Copy Migration SQL" button<br>
+                3. Paste into the SQL Editor<br>
+                4. Click RUN button<br>
+                5. Wait for "Success" message<br>
+                6. Click "Mark Complete" above
+            </div>
+        </div>
+
+        <!-- Step 2: Load Seed Data -->
+        <div class="step" id="step2">
+            <div class="step-header">
+                <span class="step-number">2</span>
+                <span>Load Test Data (Optional)</span>
+            </div>
+            <div class="step-desc">
+                Adds sample menu items, events, and products for testing
+                <br><strong>Time: 2 minutes</strong>
+            </div>
+            <div class="button-group">
+                <button onclick="openSqlEditor()">📝 Open SQL Editor (New Query)</button>
+                <button class="secondary-btn" onclick="copySeedFile()">📋 Copy Seed SQL</button>
+                <button class="secondary-btn" onclick="markComplete('step2')">✓ Mark Complete</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Configure Auth URLs -->
+        <div class="step" id="step3">
+            <div class="step-header">
+                <span class="step-number">3</span>
+                <span>Configure Authentication URLs</span>
+            </div>
+            <div class="step-desc">
+                Set allowed redirect URLs for authentication
+                <br><strong>Time: 2 minutes</strong>
+            </div>
+            <div class="button-group">
+                <button onclick="openAuthSettings()">⚙️ Open Auth Settings</button>
+                <button class="secondary-btn" onclick="markComplete('step3')">✓ Mark Complete</button>
+            </div>
+            <div class="code-block">
+                Site URL: http://localhost:3000<br>
+                Redirect URLs: http://localhost:3000/**
+            </div>
+            <div class="warning">
+                <strong>Instructions:</strong><br>
+                1. Click "Open Auth Settings"<br>
+                2. Enter Site URL: <code>http://localhost:3000</code><br>
+                3. Enter Redirect URLs: <code>http://localhost:3000/**</code><br>
+                4. Scroll down and click SAVE
+            </div>
+        </div>
+
+        <!-- Step 4: Email Templates -->
+        <div class="step" id="step4">
+            <div class="step-header">
+                <span class="step-number">4</span>
+                <span>Configure Email Templates</span>
+            </div>
+            <div class="step-desc">
+                Set up 5 branded email templates for authentication
+                <br><strong>Time: 15 minutes</strong>
+            </div>
+            <div class="button-group">
+                <button onclick="openEmailTemplates()">✉️ Open Email Templates</button>
+                <button class="secondary-btn" onclick="openTemplateDoc()">📖 Open Template Guide</button>
+                <button class="secondary-btn" onclick="markComplete('step4')">✓ Mark Complete</button>
+            </div>
+            <div class="warning">
+                <strong>For each template:</strong><br>
+                1. Click "Open Email Templates" above<br>
+                2. Click "Open Template Guide" to open SUPABASE_EMAIL_TEMPLATES.md<br>
+                3. For each of the 5 templates:<br>
+                   - Click template name in Supabase<br>
+                   - Copy Subject and Body from guide<br>
+                   - Paste into Supabase<br>
+                   - Click Save<br>
+                <br>
+                <strong>5 Templates to update:</strong><br>
+                ✓ Confirm signup<br>
+                ✓ Invite user<br>
+                ✓ Magic Link<br>
+                ✓ Change Email Address<br>
+                ✓ Reset Password
+            </div>
+        </div>
+
+        <!-- Final Step: Test -->
+        <div class="step" style="border-left-color: #4CAF50;">
+            <div class="step-header">
+                <span class="step-number">✓</span>
+                <span>Test Your Setup</span>
+            </div>
+            <div class="step-desc">
+                Verify everything works by creating a test account
+            </div>
+            <div class="button-group">
+                <button onclick="openApp()">🚀 Open App (http://localhost:3000)</button>
+                <button class="secondary-btn" onclick="openRegister()">👤 Go to Register Page</button>
+            </div>
+            <div class="code-block">
+                Run in terminal: npm run dev<br>
+                Then click "Go to Register Page" above
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const PROJECT_ID = 'suguzikgatlamtpralh';
+
+        function openSqlEditor() {
+            window.open(`https://supabase.com/dashboard/project/${PROJECT_ID}/sql/new`, '_blank');
+        }
+
+        function openAuthSettings() {
+            window.open(`https://supabase.com/dashboard/project/${PROJECT_ID}/auth/url-configuration`, '_blank');
+        }
+
+        function openEmailTemplates() {
+            window.open(`https://supabase.com/dashboard/project/${PROJECT_ID}/auth/templates`, '_blank');
+        }
+
+        function openTemplateDoc() {
+            // Open the markdown file in default editor
+            alert('Opening SUPABASE_EMAIL_TEMPLATES.md in your default editor.\\n\\nIf it doesn\\'t open automatically, find the file in your project folder.');
+            window.open('SUPABASE_EMAIL_TEMPLATES.md', '_blank');
+        }
+
+        function openApp() {
+            window.open('http://localhost:3000', '_blank');
+        }
+
+        function openRegister() {
+            window.open('http://localhost:3000/auth/register', '_blank');
+        }
+
+        async function copySqlFile() {
+            try {
+                // In a real implementation, you'd load the SQL file content
+                // For now, show instructions
+                alert('SQL Copy Instructions:\\n\\n1. Open the file: 001_initial_schema.sql\\n2. Select All (Ctrl+A)\\n3. Copy (Ctrl+C)\\n4. Go to the SQL Editor (opened in previous step)\\n5. Paste (Ctrl+V)\\n6. Click RUN');
+            } catch (err) {
+                alert('Please manually open and copy: 001_initial_schema.sql');
+            }
+        }
+
+        async function copySeedFile() {
+            alert('Seed SQL Copy Instructions:\\n\\n1. Open the file: seed.sql\\n2. Select All (Ctrl+A)\\n3. Copy (Ctrl+C)\\n4. Go to the SQL Editor\\n5. Paste (Ctrl+V)\\n6. Click RUN');
+        }
+
+        function markComplete(stepId) {
+            const step = document.getElementById(stepId);
+            step.classList.add('completed');
+
+            // Save to localStorage
+            localStorage.setItem(stepId, 'completed');
+        }
+
+        // Restore completed steps on load
+        window.addEventListener('load', () => {
+            for (let i = 1; i <= 4; i++) {
+                const stepId = `step${i}`;
+                if (localStorage.getItem(stepId) === 'completed') {
+                    document.getElementById(stepId).classList.add('completed');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
